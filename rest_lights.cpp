@@ -1235,8 +1235,9 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
              else if (x < 1) { x = 1; }
              if (y > 65279) { y = 65279; }
              else if (y < 1) { y = 1; }
+
             
-             item = task.lightNode->item(RStateX);
+             ResourceItem *item = task.lightNode->item(RStateX);
              if (item && item->toNumber() != static_cast<quint16>(x))
              {
                  item->setValue(static_cast<quint16>(x));
