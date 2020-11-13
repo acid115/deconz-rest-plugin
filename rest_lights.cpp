@@ -1229,8 +1229,8 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
         else // both state.hue and state.sat
         {
             const quint8 hue = targetHue / 256;
-            // ok = addTaskSetHueAndSaturation(task, hue, targetSat); // FIXME
-            ok = addTaskSetEnhancedHueAndSaturation(task, targetHue, targetSat);
+            ok = addTaskSetHueAndSaturation(task, targetHue, targetSat); // FIXME
+            // ok = addTaskSetEnhancedHueAndSaturation(task, targetHue, targetSat);
         }
         DBG_Printf(DBG_INFO, "Tommy: hue: %f, sat: %f\n", targetHue, targetSat);
             
