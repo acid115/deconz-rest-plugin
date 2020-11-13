@@ -1206,9 +1206,11 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
         else // both state.hue and state.sat
         {
             const quint8 hue = targetHue / 256;
-            ok = addTaskSetHueAndSaturation(task, hue, targetSat); // FIXME
-            // ok = addTaskSetEnhancedHueAndSaturation(task, targetHue, targetSat);
+            // ok = addTaskSetHueAndSaturation(task, hue, targetSat); // FIXME
+            ok = addTaskSetEnhancedHueAndSaturation(task, targetHue, targetSat);
         }
+        DBG_Printf(DBG_INFO, "Tommy: hue: %f, sat: %f\n", targetHue, targetSat);
+            
         if (ok)
         {
             // FIXME: do we need this?
@@ -1235,7 +1237,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
              else if (x < 1) { x = 1; }
              if (y > 65279) { y = 65279; }
              else if (y < 1) { y = 1; }
-
+             DBG_Printf(DBG_INFO, "Tommy: x: %f, y: %f\n", x, y);
             
              ResourceItem *item = task.lightNode->item(RStateX);
              if (item && item->toNumber() != static_cast<quint16>(x))
