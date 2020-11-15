@@ -1216,7 +1216,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
             // FIXME: do we need this?
              quint16 hue = hasHue ? targetHue : taskRef.lightNode->item(RStateHue)->toNumber();
              quint8 sat = hasSat ? targetSat : taskRef.lightNode->item(RStateSat)->toNumber();
-            
+             DBG_Printf(DBG_INFO, "Tommy: hue: %d, sat:  %d\n", hue, sat);
              double r, g, b;
              double x, y;
              double h = (hue * 360.0) / 65535.0;
@@ -1231,6 +1231,8 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
              if (y < 0) { y = 0; }
              else if (y > 1) { y = 1; }
             
+             addTaskSetXyColor(task, x, y)
+
              x *= 65535.0;
              y *= 65535.0;
              if (x > 65279) { x = 65279; }
@@ -1253,6 +1255,8 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
                  Event e(RLights, RStateY, task.lightNode->id(), item);
                  enqueueEvent(e);
              }
+             item = task.lightNode->item(RStateColorMode);
+             item->setValue(QString("xy"));
             // End FIXME
 
             if (hasHue)
