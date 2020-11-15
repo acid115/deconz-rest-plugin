@@ -1231,7 +1231,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
              if (y < 0) { y = 0; }
              else if (y > 1) { y = 1; }
             
-             addTaskSetXyColor(task, x, y)
+             addTaskSetXyColor(task, x, y);
 
              x *= 65535.0;
              y *= 65535.0;
