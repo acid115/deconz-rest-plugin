@@ -1135,12 +1135,13 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
     {
         TaskItem task;
         copyTaskReq(taskRef, task);
+        quint16 targetCtForChange = targetCt;
 
         //correct ikea ct 
         if (task.lightNode->manufacturerCode() == VENDOR_IKEA && 
                 req.mode == ApiModeEcho )
         {    
-            targetCt += 65;
+            targetCtForChange += 65;
         }
 
         if (!isOn)
@@ -1151,7 +1152,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
         {
             rsp.list.append(errorToMap(ERR_PARAMETER_NOT_MODIFIEABLE, QString("/lights/%1/state").arg(id), QString("parameter, ct, is not modifiable. Colorloop is active.")));
         }
-        else if (addTaskSetColorTemperature(task, targetCt))
+        else if (addTaskSetColorTemperature(task, targetCtForChange))
         {
             QVariantMap rspItem;
             QVariantMap rspItemState;
