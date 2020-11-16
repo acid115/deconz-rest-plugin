@@ -1229,17 +1229,20 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
         else // both state.hue and state.sat
         {
             const quint8 hue = targetHue / 256;
-            ok = addTaskSetHueAndSaturation(task, targetHue, targetSat); // FIXME
+            ok = addTaskSetHueAndSaturation(task, hue, targetSat); // FIXME
             // ok = addTaskSetEnhancedHueAndSaturation(task, targetHue, targetSat);
         }
-        DBG_Printf(DBG_INFO, "Tommy: hue: %f, sat: %f\n", targetHue, targetSat);
+        //DBG_Printf(DBG_INFO, "Tommy: hue: %f, sat: %f\n", targetHue, targetSat);
             
         if (ok)
         {
+            if (taskRef.lightNode->manufacturerCode() == VENDOR_IKEA 
+                && hasHue && hasSat && !hasXy && !hasCt)
+            {
             // FIXME: do we need this?
              quint16 hue = hasHue ? targetHue : taskRef.lightNode->item(RStateHue)->toNumber();
              quint8 sat = hasSat ? targetSat : taskRef.lightNode->item(RStateSat)->toNumber();
-             DBG_Printf(DBG_INFO, "Tommy: hue: %d, sat:  %d\n", hue, sat);
+             //DBG_Printf(DBG_INFO, "Tommy: hue: %d, sat:  %d\n", hue, sat);
              double r, g, b;
              double x, y;
              double h = (hue * 360.0) / 65535.0;
@@ -1253,6 +1256,15 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
              else if (x > 1) { x = 1; }
              if (y < 0) { y = 0; }
              else if (y > 1) { y = 1; }
+
+             //correction for color yellow and Ikea ColorBulb 
+             if (req.mode == ApiModeEcho && 
+                hue == 10923)
+             {
+                //real yellow
+                x = 0.5068;
+                y = 0.4715;
+             } 
             
              addTaskSetXyColor(task, x, y);
 
@@ -1262,16 +1274,16 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
              else if (x < 1) { x = 1; }
              if (y > 65279) { y = 65279; }
              else if (y < 1) { y = 1; }
-             DBG_Printf(DBG_INFO, "Tommy: x: %f, y: %f\n", x, y);
+             //DBG_Printf(DBG_INFO, "Tommy: x: %f, y: %f\n", x, y);
             
-             ResourceItem *item = task.lightNode->item(RStateX);
+             ResourceItem *item = taskRef.lightNode->item(RStateX);
              if (item && item->toNumber() != static_cast<quint16>(x))
              {
                  item->setValue(static_cast<quint16>(x));
                  Event e(RLights, RStateX, task.lightNode->id(), item);
                  enqueueEvent(e);
              }
-             item = task.lightNode->item(RStateY);
+             item = taskRef.lightNode->item(RStateY);
              if (item && item->toNumber() != static_cast<quint16>(y))
              {
                  item->setValue(static_cast<quint16>(y));
@@ -1280,6 +1292,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
              }
              //item = task.lightNode->item(RStateColorMode);
              //item->setValue(QString("xy"));
+            }
             // End FIXME
 
             if (hasHue)
