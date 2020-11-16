@@ -1255,8 +1255,8 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
                  Event e(RLights, RStateY, task.lightNode->id(), item);
                  enqueueEvent(e);
              }
-             item = task.lightNode->item(RStateColorMode);
-             item->setValue(QString("xy"));
+             //item = task.lightNode->item(RStateColorMode);
+             //item->setValue(QString("xy"));
             // End FIXME
 
             if (hasHue)
