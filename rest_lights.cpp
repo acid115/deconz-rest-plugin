@@ -1113,6 +1113,13 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
         TaskItem task;
         copyTaskReq(taskRef, task);
 
+        //correct ikea ct 
+        if (task.lightNode->manufacturerCode() == VENDOR_IKEA && 
+                req.mode == ApiModeEcho )
+        {    
+            targetCt += 65;
+        }
+
         if (!isOn)
         {
             rsp.list.append(errorToMap(ERR_DEVICE_OFF, QString("/lights/%1/state").arg(id), QString("parameter, ct, is not modifiable. Device is set to off.")));
