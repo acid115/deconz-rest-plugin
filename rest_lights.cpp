@@ -1144,6 +1144,17 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
             targetCtForChange += 65;
         }
 
+        if (task.lightNode->manufacturerCode() == VENDOR_HEIMAN && 
+                req.mode == ApiModeEcho )
+        {    
+            
+            //Tommy: Korrektur Heiman CT Wertebereich
+            //Alexa gibt mit 199 - 383
+            //Heiman braucht 155 - 499
+            double targdoub = ((155.0 * 383.0 - 199.0 * 499.0) + (499.0 - 155.0) * targetCt) / (383.0 - 199.0);
+            targetCtForChange = static_cast<quint16>(targdoub);           
+        }
+
         if (!isOn)
         {
             rsp.list.append(errorToMap(ERR_DEVICE_OFF, QString("/lights/%1/state").arg(id), QString("parameter, ct, is not modifiable. Device is set to off.")));
