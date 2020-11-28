@@ -1114,6 +1114,8 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
         copyTaskReq(taskRef, task);
         quint16 targetCtForChange = targetCt;
 
+        DBG_Printf(DBG_INFO, "Tommy: hasCT");
+
         //correct ikea ct 
         if (task.lightNode->manufacturerCode() == VENDOR_IKEA && 
                 req.mode == ApiModeEcho )
@@ -1163,6 +1165,8 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
     {
         TaskItem task;
         copyTaskReq(taskRef, task);
+        DBG_Printf(DBG_INFO, "Tommy: hasCTINc")
+
 
         if (!isOn)
         {
