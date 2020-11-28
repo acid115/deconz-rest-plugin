@@ -1129,7 +1129,10 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
             //Alexa gibt mit 199 - 383
             //Heiman braucht 155 - 499
             double targdoub = ((155.0 * 383.0 - 199.0 * 499.0) + (499.0 - 155.0) * targetCt) / (383.0 - 199.0);
-            targetCtForChange = static_cast<quint16>(targdoub);           
+            
+            targetCtForChange = static_cast<quint16>(targdoub);   
+            DBG_Printf(DBG_INFO, "Tommy: targdoub: %f, targetct: %f, targetCtForChange: %f\n", targdoub, targetCt, targetCtForChange);
+                
         }
 
         if (!isOn)
