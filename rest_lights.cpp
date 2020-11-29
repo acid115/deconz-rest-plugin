@@ -1165,8 +1165,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
     {
         TaskItem task;
         copyTaskReq(taskRef, task);
-        DBG_Printf(DBG_INFO, "Tommy: hasCTINc")
-
+        
 
         if (!isOn)
         {
