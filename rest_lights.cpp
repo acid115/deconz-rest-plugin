@@ -628,6 +628,9 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
         bool paramOk = false;
         bool valueOk = false;
         QString param = p.key();
+
+        DBG_Printf(DBG_INFO, "Tommy: param= %s \n", param);
+
         if (param == "on" && taskRef.lightNode->item(RStateOn))
         {
             paramOk = true;
