@@ -629,7 +629,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
         bool valueOk = false;
         QString param = p.key();
 
-        DBG_Printf(DBG_INFO, "Tommy: param= %s \n", param);
+
 
         if (param == "on" && taskRef.lightNode->item(RStateOn))
         {
@@ -689,6 +689,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
                         hasXy = true;
                         targetX = x > 0.9961 ? 0.9961 : x;
                         targetY = y > 0.9961 ? 0.9961 : y;
+                        DBG_Printf(DBG_INFO, "Tommy: hasxy! x: %f  y: %f\n", targetX, targetY);
                     }
                     else
                     {
@@ -713,6 +714,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
                     valueOk = true;
                     hasCt = true;
                     targetCt = (ctMin < 500 && ct < ctMin) ? ctMin : (ctMax > ctMin && ct > ctMax) ? ctMax : ct;
+                    DBG_Printf(DBG_INFO, "Tommy: hasct! targetCt: %f\n", targetCt);
                 }
             }
         }
@@ -734,6 +736,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
                     ct += ctInc;
                     ct = ct < 0 ? 0 : ct > 0xFEFF ? 0xFEFF : ct;
                     targetCt = (ctMin < 500 && ct < ctMin) ? ctMin : (ctMax > ctMin && ct > ctMax) ? ctMax : ct;
+                    DBG_Printf(DBG_INFO, "Tommy: hasctInc! targetCtInc: %f\n", targetCt);
                 }
             }
         }
@@ -747,6 +750,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
                 valueOk = true;
                 hasHue = true;
                 targetHue = hue; // Funny: max CurrentHue is 0xFE, max EnhancedCurrentHue is 0xFFFF
+                DBG_Printf(DBG_INFO, "Tommy: hashue! targethue: %f\n", targetHue);
             }
         }
         else if (param == "sat" && taskRef.lightNode->item(RStateHue) && taskRef.lightNode->item(RStateSat))
