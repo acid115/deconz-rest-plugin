@@ -1122,8 +1122,8 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
         quint16 targetCtForChange = targetCt;
 
         DBG_Printf(DBG_INFO, "Tommy: hasCT\n");
-        DBG_Printf(DBG_INFO, "Tommy: Vendor: %d\n", task.lightNode->manufacturerCode());
-        DBG_Printf(DBG_INFO, "Tommy: reqmode: %s\n", req.mode);
+        //DBG_Printf(DBG_INFO, "Tommy: Vendor: %d\n", task.lightNode->manufacturerCode());
+        //DBG_Printf(DBG_INFO, "Tommy: reqmode: %s\n", req.mode);
 
         //correct ikea ct 
         if (task.lightNode->manufacturerCode() == VENDOR_IKEA && 
