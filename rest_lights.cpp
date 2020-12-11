@@ -1155,11 +1155,11 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
             targetCtForChange += 65;
         }
 
-        if (task.lightNode->manufacturerCode() == VENDOR_HEIMAN && 
+        if (task.lightNode->manufacturerCode() == VENDOR_EMBER && 
                 req.mode == ApiModeEcho )
         {    
             
-            DBG_Printf(DBG_INFO, "Tommy: hasHeimannCt\n");
+            DBG_Printf(DBG_INFO, "Tommy: hasEmberCt\n");
             //Tommy: Korrektur Heiman CT Wertebereich
             //Alexa gibt mit 199 - 383
             //Heiman braucht 155 - 499
