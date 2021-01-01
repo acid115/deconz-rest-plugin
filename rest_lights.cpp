@@ -1155,7 +1155,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
             targetCtForChange += 65;
         }
 
-        if (task.lightNode->manufacturerCode() == VENDOR_EMBER && 
+        if (task.lightNode->manufacturerCode() == VENDOR_HEIMAN && 
                 req.mode == ApiModeEcho )
         {    
             
