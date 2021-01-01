@@ -733,8 +733,14 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
                 {
                     valueOk = true;
                     hasCt = true;
-                    targetCt = (ctMin < 500 && ct < ctMin) ? ctMin : (ctMax > ctMin && ct > ctMax) ? ctMax : ct;
-                    //DBG_Printf(DBG_INFO, "Tommy: hasct! targetCt: %d\n", targetCt);
+                    if (taskRef.lightNode->manufacturerCode() == VENDOR_IKEA && 
+                        req.mode == ApiModeEcho )
+                    {
+                        targetCt = ct;
+                    } else {
+                        targetCt = (ctMin < 500 && ct < ctMin) ? ctMin : (ctMax > ctMin && ct > ctMax) ? ctMax : ct;
+                        //DBG_Printf(DBG_INFO, "Tommy: hasct! targetCt: %d\n", targetCt);
+                    }
                 }
             }
         }
