@@ -1152,14 +1152,23 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
         if (task.lightNode->manufacturerCode() == VENDOR_IKEA && 
                 req.mode == ApiModeEcho )
         {    
-            targetCtForChange += 65;
+            //targetCtForChange += 65;
+            DBG_Printf(DBG_INFO, "Tommy: hasIkeaCt\n");
+            //Tommy: Korrektur IKEA CT Wertebereich
+            //Alexa gibt mit 199 - 383
+            //Ikea braucht 250 - 454
+            double targdoub = ((250.0 * 383.0 - 199.0 * 454.0) + (454.0 - 250.0) * targetCt) / (383.0 - 199.0);
+            
+            targetCtForChange = static_cast<quint16>(targdoub);   
+            DBG_Printf(DBG_INFO, "Tommy: targdoub: %f, targetct: %d, targetCtForChange: %d\n", targdoub, targetCt, targetCtForChange);
+             
         }
 
         if (task.lightNode->manufacturerCode() == VENDOR_HEIMAN && 
                 req.mode == ApiModeEcho )
         {    
             
-            DBG_Printf(DBG_INFO, "Tommy: hasEmberCt\n");
+            DBG_Printf(DBG_INFO, "Tommy: hasHeimanCt\n");
             //Tommy: Korrektur Heiman CT Wertebereich
             //Alexa gibt mit 199 - 383
             //Heiman braucht 155 - 499
