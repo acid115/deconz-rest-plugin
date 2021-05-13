@@ -1247,7 +1247,8 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
             
         if (ok)
         {
-            if (taskRef.lightNode->manufacturerCode() == VENDOR_IKEA 
+            if ((taskRef.lightNode->manufacturerCode() == VENDOR_IKEA ||
+                 taskRef.lightNode->modelId().startsWith(QLatin1String("HG06104A")))
                 && hasHue && hasSat && !hasXy && !hasCt)
             {
             // FIXME: do we need this?
