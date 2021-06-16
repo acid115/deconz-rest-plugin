@@ -555,7 +555,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
     {
         return setWarningDeviceState(req, rsp, taskRef, map);
     }
-    
+
     // Danalock support. You need to check for taskRef.lightNode->type() == QLatin1String("Door lock"), similar to what I've done under hasAlert for the Siren.
     bool isDoorLockDevice = false;
     if (taskRef.lightNode->type() == QLatin1String("Door Lock"))
@@ -775,7 +775,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
         else if (param == "colormode" && taskRef.lightNode->item(RStateColorMode)) {
             paramOk = true;
             valueOk = true;
-            rsp.list.append(errorToMap(ERR_PARAMETER_NOT_MODIFIEABLE, QString("/lights/%1/state").arg(id), QString("parameter, %1, is not modifiable.").arg(param)));
+            rsp.list.append(errorToMap(ERR_PARAMETER_NOT_MODIFIABLE, QString("/lights/%1/state").arg(id), QString("parameter, %1, is not modifiable.").arg(param)));
         }
         else if (param == "alert" && taskRef.lightNode->item(RStateAlert))
         {
@@ -1082,7 +1082,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
         }
         else if (taskRef.lightNode->isColorLoopActive())
         {
-            rsp.list.append(errorToMap(ERR_PARAMETER_NOT_MODIFIEABLE, QString("/lights/%1/state").arg(id), QString("parameter, xy, is not modifiable. Colorloop is active.")));
+            rsp.list.append(errorToMap(ERR_PARAMETER_NOT_MODIFIABLE, QString("/lights/%1/state").arg(id), QString("parameter, xy, is not modifiable. Colorloop is active.")));
         }
         else if (addTaskSetXyColor(task, targetX, targetY))
         {
@@ -1152,7 +1152,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
         }
         else if (taskRef.lightNode->isColorLoopActive())
         {
-            rsp.list.append(errorToMap(ERR_PARAMETER_NOT_MODIFIEABLE, QString("/lights/%1/state").arg(id), QString("parameter, ct, is not modifiable. Colorloop is active.")));
+            rsp.list.append(errorToMap(ERR_PARAMETER_NOT_MODIFIABLE, QString("/lights/%1/state").arg(id), QString("parameter, ct, is not modifiable. Colorloop is active.")));
         }
         else if (addTaskSetColorTemperature(task, targetCtForChange))
         {
@@ -1182,7 +1182,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
         }
         else if (taskRef.lightNode->isColorLoopActive())
         {
-            rsp.list.append(errorToMap(ERR_PARAMETER_NOT_MODIFIEABLE, QString("/lights/%1/state").arg(id), QString("parameter, ct_inc, is not modifiable. Colorloop is active.")));
+            rsp.list.append(errorToMap(ERR_PARAMETER_NOT_MODIFIABLE, QString("/lights/%1/state").arg(id), QString("parameter, ct_inc, is not modifiable. Colorloop is active.")));
         }
         else if (addTaskIncColorTemperature(task, targetCtInc))
         {
@@ -1221,11 +1221,11 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
         {
             if (hasHue)
             {
-                rsp.list.append(errorToMap(ERR_PARAMETER_NOT_MODIFIEABLE, QString("/lights/%1/state").arg(id), QString("parameter, hue, is not modifiable. Colorloop is active.")));
+                rsp.list.append(errorToMap(ERR_PARAMETER_NOT_MODIFIABLE, QString("/lights/%1/state").arg(id), QString("parameter, hue, is not modifiable. Colorloop is active.")));
             }
             if (hasSat)
             {
-                rsp.list.append(errorToMap(ERR_PARAMETER_NOT_MODIFIEABLE, QString("/lights/%1/state").arg(id), QString("parameter, sat, is not modifiable. Colorloop is active.")));
+                rsp.list.append(errorToMap(ERR_PARAMETER_NOT_MODIFIABLE, QString("/lights/%1/state").arg(id), QString("parameter, sat, is not modifiable. Colorloop is active.")));
             }
         }
         else if (!hasSat) // only state.hue
@@ -1552,7 +1552,8 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
         else
         {
             const quint16 manufacturerCode = taskRef.lightNode->manufacturerCode();
-            const quint8 cmd = (manufacturerCode == VENDOR_PHILIPS || manufacturerCode == VENDOR_IKEA)
+            const quint8 cmd = (manufacturerCode == VENDOR_PHILIPS ||
+                                (manufacturerCode == VENDOR_IKEA && taskRef.lightNode->modelId() != QLatin1String("KNYCKLAN receiver")))
                     ? ONOFF_COMMAND_OFF_WITH_EFFECT
                     : ONOFF_COMMAND_OFF;
             ok = addTaskSetOnOff(task, cmd, 0, 0);
@@ -2025,15 +2026,15 @@ int DeRestPluginPrivate::setWindowCoveringState(const ApiRequest &req, ApiRespon
 int DeRestPluginPrivate::setTuyaDeviceState(const ApiRequest &req, ApiResponse &rsp, TaskItem &taskRef, QVariantMap &map)
 {
     QString id = req.path[3];
-    
+
     bool targetOn = false;
     bool hasOn = false;
     bool hasBri = false;
     bool hasAlert = false;
     uint targetBri = 0;
-    
+
     bool ok = false;
-    
+
     //Parse all parameters
     for (QVariantMap::const_iterator p = map.begin(); p != map.end(); p++)
     {
@@ -2066,13 +2067,13 @@ int DeRestPluginPrivate::setTuyaDeviceState(const ApiRequest &req, ApiResponse &
                 rsp.list.append(errorToMap(ERR_INVALID_VALUE, QString("/lights/%1/state").arg(id), QString("invalid value, %1, for parameter, on").arg(map["on"].toString())));
             }
         }
-        
-        else if (p.key() == "alert")	
-        {	
-            if (map[p.key()].type() == QVariant::String)	
-            {	
-                hasAlert = true;	
-            }	
+
+        else if (p.key() == "alert")
+        {
+            if (map[p.key()].type() == QVariant::String)
+            {
+                hasAlert = true;
+            }
         }
 
         else
@@ -2080,12 +2081,12 @@ int DeRestPluginPrivate::setTuyaDeviceState(const ApiRequest &req, ApiResponse &
             rsp.list.append(errorToMap(ERR_PARAMETER_NOT_AVAILABLE, QString("/lights/%1/state").arg(id), QString("parameter, %1, not available").arg(p.key())));
         }
     }
-    
+
     // Return direct if there is already error
     if (!rsp.list.isEmpty())
     {
-        rsp.httpStatus = HttpStatusBadRequest; 
-        return REQ_READY_SEND; 
+        rsp.httpStatus = HttpStatusBadRequest;
+        return REQ_READY_SEND;
     }
 
     if (hasBri)
@@ -2094,7 +2095,7 @@ int DeRestPluginPrivate::setTuyaDeviceState(const ApiRequest &req, ApiResponse &
         QByteArray data = QByteArray("\x00\x00", 2);
         data.append(static_cast<qint8>((bri >> 8) & 0xff));
         data.append(static_cast<qint8>(bri & 0xff));
-        
+
         if (R_GetProductId(taskRef.lightNode) == QLatin1String("Tuya_DIMSWITCH Earda Dimmer") ||
             R_GetProductId(taskRef.lightNode) == QLatin1String("Tuya_DIMSWITCH EDM-1ZAA-EU"))
         {
@@ -2104,7 +2105,7 @@ int DeRestPluginPrivate::setTuyaDeviceState(const ApiRequest &req, ApiResponse &
         {
             ok = sendTuyaRequest(taskRef, TaskTuyaRequest, DP_TYPE_VALUE, DP_IDENTIFIER_DIMMER_LEVEL_MODE1, data);
         }
-        
+
         if (ok)
         {
             QVariantMap rspItem;
@@ -2159,28 +2160,28 @@ int DeRestPluginPrivate::setTuyaDeviceState(const ApiRequest &req, ApiResponse &
         }
 
     }
-    
-    if (hasAlert)	
-    {	
-        QByteArray data("\x00", 1);	
-    
-        if (map["alert"].toString() == "lselect")	
-        {	
-            data = QByteArray("\x01",1);	
-        }	
-    
-        if (sendTuyaRequest(taskRef, TaskTuyaRequest, DP_TYPE_BOOL, DP_IDENTIFIER_ALARM, data))	
-        {	
-            QVariantMap rspItem;	
-            QVariantMap rspItemState;	
-            rspItemState[QString("/lights/%1/state/alert").arg(id)] = map["alert"].toString();	
-            rspItem["success"] = rspItemState;	
-            rsp.list.append(rspItem);	
-        }	
-        else	
-        {	
-            rsp.list.append(errorToMap(ERR_INTERNAL_ERROR, QString("/lights/%1").arg(id), QString("Internal error, %1").arg(ERR_BRIDGE_BUSY)));	
-        }	
+
+    if (hasAlert)
+    {
+        QByteArray data("\x00", 1);
+
+        if (map["alert"].toString() == "lselect")
+        {
+            data = QByteArray("\x01",1);
+        }
+
+        if (sendTuyaRequest(taskRef, TaskTuyaRequest, DP_TYPE_BOOL, DP_IDENTIFIER_ALARM, data))
+        {
+            QVariantMap rspItem;
+            QVariantMap rspItemState;
+            rspItemState[QString("/lights/%1/state/alert").arg(id)] = map["alert"].toString();
+            rspItem["success"] = rspItemState;
+            rsp.list.append(rspItem);
+        }
+        else
+        {
+            rsp.list.append(errorToMap(ERR_INTERNAL_ERROR, QString("/lights/%1").arg(id), QString("Internal error, %1").arg(ERR_BRIDGE_BUSY)));
+        }
     }
 
     return REQ_READY_SEND;
