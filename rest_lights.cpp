@@ -1110,8 +1110,8 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
         copyTaskReq(taskRef, task);
         quint16 targetCtForChange = targetCt;
 
-        DBG_Printf(DBG_INFO, "Tommy: hasCT\n");
-        DBG_Printf(DBG_INFO, "Tommy: Vendor: %d\n", task.lightNode->manufacturerCode());
+        //DBG_Printf(DBG_INFO, "Tommy: hasCT\n");
+        //DBG_Printf(DBG_INFO, "Tommy: Vendor: %d\n", task.lightNode->manufacturerCode());
         //DBG_Printf(DBG_INFO, "Tommy: reqmode: %s\n", req.mode);
 
         //correct ikea ct 
@@ -1119,14 +1119,14 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
                 req.mode == ApiModeEcho )
         {    
             //targetCtForChange += 65;
-            DBG_Printf(DBG_INFO, "Tommy: hasIkeaCt\n");
+            //DBG_Printf(DBG_INFO, "Tommy: hasIkeaCt\n");
             //Tommy: Korrektur IKEA CT Wertebereich
             //Alexa gibt mit 199 - 383
             //Ikea braucht 250 - 454
             double targdoub = ((250.0 * 383.0 - 199.0 * 454.0) + (454.0 - 250.0) * targetCt) / (383.0 - 199.0);
             
             targetCtForChange = static_cast<quint16>(targdoub);   
-            DBG_Printf(DBG_INFO, "Tommy: targdoub: %f, targetct: %d, targetCtForChange: %d\n", targdoub, targetCt, targetCtForChange);
+            //DBG_Printf(DBG_INFO, "Tommy: targdoub: %f, targetct: %d, targetCtForChange: %d\n", targdoub, targetCt, targetCtForChange);
              
         }
 
@@ -1135,14 +1135,14 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
                 req.mode == ApiModeEcho )
         {    
             
-            DBG_Printf(DBG_INFO, "Tommy: hasHeimanCt\n");
+            //DBG_Printf(DBG_INFO, "Tommy: hasHeimanCt\n");
             //Tommy: Korrektur Heiman CT Wertebereich
             //Alexa gibt mit 199 - 383
             //Heiman braucht 155 - 499
             double targdoub = ((155.0 * 383.0 - 199.0 * 499.0) + (499.0 - 155.0) * targetCt) / (383.0 - 199.0);
             
             targetCtForChange = static_cast<quint16>(targdoub);   
-            DBG_Printf(DBG_INFO, "Tommy: targdoub: %f, targetct: %d, targetCtForChange: %d\n", targdoub, targetCt, targetCtForChange);
+            //DBG_Printf(DBG_INFO, "Tommy: targdoub: %f, targetct: %d, targetCtForChange: %d\n", targdoub, targetCt, targetCtForChange);
                 
         }
 
