@@ -2884,6 +2884,17 @@ void DeRestPluginPrivate::setLightNodeStaticCapabilities(LightNode *lightNode)
         // hue, saturation, color mode, xy, ct
         lightNode->addItem(DataTypeUInt16, RConfigColorCapabilities)->setValue(0x0001 | 0x0008 | 0x0010);
     }
+    //Tommy
+    else if (lightNode->modelId() == QLatin1String("HG06104A"))
+    {
+        if (lightNode->item(RConfigColorCapabilities) != nullptr)
+        {
+            return; // already initialized
+        }
+        // hue, saturation, color mode, xy, ct
+        lightNode->addItem(DataTypeUInt16, RConfigColorCapabilities)->setValue(0x0001 | 0x0008 | 0x0010);
+    }
+    //Tommy End
     else if (lightNode->modelId() == QLatin1String("LIGHTIFY A19 Tunable White") ||
              lightNode->modelId() == QLatin1String("LIGHTIFY Conv Under Cabinet TW") ||
              lightNode->modelId() == QLatin1String("LIGHTIFY Under Cabinet TW") ||
