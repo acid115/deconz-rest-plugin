@@ -2895,7 +2895,7 @@ void DeRestPluginPrivate::setLightNodeStaticCapabilities(LightNode *lightNode)
         lightNode->addItem(DataTypeUInt16, RConfigColorCapabilities)->setValue(0x0001 | 0x0008 | 0x0010);
         lightNode->addItem(DataTypeUInt16, RStateHue);
         lightNode->addItem(DataTypeUInt8, RStateSat);
-        lightNode->addItem(DataTypeString, RStateColorMode)->setValue(QVariant("hs"));
+        lightNode->addItem(DataTypeString, RStateColorMode)->setValue(QVariant("xy"));
     }
     //Tommy End
     else if (lightNode->modelId() == QLatin1String("LIGHTIFY A19 Tunable White") ||

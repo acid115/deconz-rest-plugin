@@ -1254,7 +1254,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
             // FIXME: do we need this?
              quint16 hue = hasHue ? targetHue : taskRef.lightNode->item(RStateHue)->toNumber();
              quint8 sat = hasSat ? targetSat : taskRef.lightNode->item(RStateSat)->toNumber();
-             //DBG_Printf(DBG_INFO, "Tommy: hue: %d, sat:  %d\n", hue, sat);
+             DBG_Printf(DBG_INFO, "Tommy: hue: %d, sat:  %d\n", hue, sat);
              double r, g, b;
              double x, y;
              double h = (hue * 360.0) / 65535.0;
@@ -1286,7 +1286,7 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
              else if (x < 1) { x = 1; }
              if (y > 65279) { y = 65279; }
              else if (y < 1) { y = 1; }
-             //DBG_Printf(DBG_INFO, "Tommy: x: %f, y: %f\n", x, y);
+             DBG_Printf(DBG_INFO, "Tommy: x: %f, y: %f\n", x, y);
             
              ResourceItem *item = taskRef.lightNode->item(RStateX);
              if (item && item->toNumber() != static_cast<quint16>(x))
