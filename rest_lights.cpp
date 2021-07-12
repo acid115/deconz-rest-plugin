@@ -1327,7 +1327,11 @@ int DeRestPluginPrivate::setLightState(const ApiRequest &req, ApiResponse &rsp)
 
                 taskRef.lightNode->setValue(RStateSat, targetSat);
             }
-            taskRef.lightNode->setValue(RStateColorMode, QString("hs"));
+            if taskRef.lightNode->modelId().startsWith(QLatin1String("HG06104A")) {
+                taskRef.lightNode->setValue(RStateColorMode, QString("xy")); 
+            }else {
+                taskRef.lightNode->setValue(RStateColorMode, QString("hs"));
+            }
         }
         else
         {
